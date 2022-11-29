@@ -1,0 +1,6 @@
+Variable json
+  name Text
+  value Double
+  created UTCTime
+  updated UTCTime
+  UniqueName name

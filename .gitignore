@@ -3,6 +3,7 @@
 *.cabal
 *.chi
 *.chs.h
+*.db*
 *.dyn_hi
 *.dyn_o
 *.eventlog
@@ -25,3 +26,4 @@ cabal.project.local
 cabal.project.local~
 cabal.sandbox.config
 dist*
+yesod_hello_world*

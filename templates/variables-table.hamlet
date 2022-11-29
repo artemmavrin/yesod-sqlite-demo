@@ -1,0 +1,14 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+      <th>Created</th>
+      <th>Updated</th>
+  <tbody>
+    $forall variable <- variables
+      <tr>
+        <td>#{variableName variable}
+        <td>#{variableValue variable}
+        <td>#{show $ variableCreated variable}
+        <td>#{show $ variableUpdated variable}

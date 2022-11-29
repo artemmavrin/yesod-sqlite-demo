@@ -1,0 +1,3 @@
+/                EvalR POST
+/variables       VarsR GET POST
+/variables/#Text VarR  GET PUT DELETE

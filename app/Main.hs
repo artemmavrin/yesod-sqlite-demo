@@ -1,6 +1,8 @@
-module Main (main) where
+module Main
+  ( main
+  ) where
 
-import Lib
+import qualified Application (main)
 
 main :: IO ()
-main = someFunc
+main = Application.main
