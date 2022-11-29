@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-pragma">{-# LANGUAGE OverloadedStrings #-}</span><span>
+</span><span id="line-2"></span><span class="hs-pragma">{-# LANGUAGE QuasiQuotes #-}</span><span>
+</span><span id="line-3"></span><span class="hs-pragma">{-# LANGUAGE TemplateHaskell #-}</span><span>
+</span><span id="line-4"></span><span class="hs-pragma">{-# LANGUAGE TypeFamilies #-}</span><span>
+</span><span id="line-5"></span><span class="hs-pragma">{-# LANGUAGE ViewPatterns #-}</span><span>
+</span><span id="line-6"></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Application</span><span>
+</span><span id="line-8"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Application.html#main"><span class="hs-identifier">main</span></a></span><span>
+</span><span id="line-9"></span><span>  </span><span class="hs-special">)</span><span> </span><span class="hs-keyword">where</span><span>
+</span><span id="line-10"></span><span>
+</span><span id="line-11"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Conduit</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">runResourceT</span></span><span class="hs-special">)</span><span>
+</span><span id="line-12"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Monad.IO.Class</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">liftIO</span></span><span class="hs-special">)</span><span>
+</span><span id="line-13"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Control.Monad.Logger</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">runStderrLoggingT</span></span><span class="hs-special">)</span><span>
+</span><span id="line-14"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Data.Text</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">Text</span></span><span class="hs-special">)</span><span>
+</span><span id="line-15"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Database.Persist.Sql</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">runMigration</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">runSqlPool</span></span><span class="hs-special">)</span><span>
+</span><span id="line-16"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Database.Persist.Sqlite</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">withSqlitePool</span></span><span class="hs-special">)</span><span>
+</span><span id="line-17"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">Yesod</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier">mkYesodDispatch</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier">warp</span></span><span class="hs-special">)</span><span>
+</span><span id="line-18"></span><span>
+</span><span id="line-19"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Foundation.html"><span class="hs-identifier">Foundation</span></a></span><span>
+</span><span id="line-20"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Handler.html"><span class="hs-identifier">Handler</span></a></span><span>
+</span><span id="line-21"></span><span>
+</span><span id="line-22"></span><span id="local-6989586621679161888"><span class="hs-identifier">mkYesodDispatch</span><span> </span><span class="hs-string">&quot;App&quot;</span><span> </span><span class="hs-identifier">resourcesApp</span></span><span>
+</span><span id="line-23"></span><span>
+</span><span id="line-24"></span><span class="annot"><a href="Application.html#dbName"><span class="hs-identifier hs-type">dbName</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span>
+</span><span id="line-25"></span><span id="dbName"><span class="annot"><span class="annottext">dbName :: Text
+</span><a href="Application.html#dbName"><span class="hs-identifier hs-var hs-var">dbName</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text
+</span><span class="hs-string">&quot;env.db&quot;</span></span><span>
+</span><span id="line-26"></span><span>
+</span><span id="line-27"></span><span class="annot"><a href="Application.html#openConnectionCount"><span class="hs-identifier hs-type">openConnectionCount</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Int</span></span><span>
+</span><span id="line-28"></span><span id="openConnectionCount"><span class="annot"><span class="annottext">openConnectionCount :: Int
+</span><a href="Application.html#openConnectionCount"><span class="hs-identifier hs-var hs-var">openConnectionCount</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-number">10</span></span><span>
+</span><span id="line-29"></span><span>
+</span><span id="line-30"></span><span class="annot"><a href="Application.html#main"><span class="hs-identifier hs-type">main</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">IO</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span><span id="main"><span class="annot"><span class="annottext">main :: IO ()
+</span><a href="Application.html#main"><span class="hs-identifier hs-var hs-var">main</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-32"></span><span>  </span><span class="annot"><span class="annottext">String -&gt; IO ()
+</span><span class="hs-identifier hs-var">putStrLn</span></span><span> </span><span class="annot"><span class="annottext">String
+</span><span class="hs-string">&quot;Serving application on http://localhost:3000&quot;</span></span><span>
+</span><span id="line-33"></span><span>  </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. MonadIO m =&gt; LoggingT m a -&gt; m a
+</span><span class="hs-identifier hs-var">runStderrLoggingT</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span>
+</span><span id="line-34"></span><span>    </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a.
+(MonadUnliftIO m, MonadLoggerIO m) =&gt;
+Text -&gt; Int -&gt; (Pool SqlBackend -&gt; m a) -&gt; m a
+</span><span class="hs-identifier hs-var">withSqlitePool</span></span><span> </span><span class="annot"><span class="annottext">Text
+</span><a href="Application.html#dbName"><span class="hs-identifier hs-var">dbName</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="Application.html#openConnectionCount"><span class="hs-identifier hs-var">openConnectionCount</span></a></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span id="local-6989586621679161809"><span class="annot"><span class="annottext">Pool SqlBackend
+</span><a href="#local-6989586621679161809"><span class="hs-identifier hs-var">pool</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-35"></span><span>      </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. MonadIO m =&gt; IO a -&gt; m a
+</span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-36"></span><span>        </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. MonadUnliftIO m =&gt; ResourceT m a -&gt; m a
+</span><span class="hs-identifier hs-var">runResourceT</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
+</span><span class="hs-identifier hs-var">flip</span></span><span> </span><span class="annot"><span class="annottext">forall backend (m :: * -&gt; *) a.
+(MonadUnliftIO m, BackendCompatible SqlBackend backend) =&gt;
+ReaderT backend m a -&gt; Pool backend -&gt; m a
+</span><span class="hs-identifier hs-var">runSqlPool</span></span><span> </span><span class="annot"><span class="annottext">Pool SqlBackend
+</span><a href="#local-6989586621679161809"><span class="hs-identifier hs-var">pool</span></a></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *).
+MonadIO m =&gt;
+Migration -&gt; ReaderT SqlBackend m ()
+</span><span class="hs-identifier hs-var">runMigration</span></span><span> </span><span class="annot"><span class="annottext">Migration
+</span><a href="Foundation.html#migrateAll"><span class="hs-identifier hs-var">migrateAll</span></a></span><span>
+</span><span id="line-37"></span><span>        </span><span class="annot"><span class="annottext">forall site. YesodDispatch site =&gt; Int -&gt; site -&gt; IO ()
+</span><span class="hs-identifier hs-var">warp</span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span class="hs-number">3000</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Pool SqlBackend -&gt; App
+</span><a href="Foundation.html#App"><span class="hs-identifier hs-var">App</span></a></span><span> </span><span class="annot"><span class="annottext">Pool SqlBackend
+</span><a href="#local-6989586621679161809"><span class="hs-identifier hs-var">pool</span></a></span><span>
+</span><span id="line-38"></span></pre></body></html>
