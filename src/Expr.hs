@@ -75,10 +75,16 @@ expr :: Stream s m Char => ParsecT s u m Expr
 expr = pad addOrSub
 
 addOrSub :: Stream s m Char => ParsecT s u m Expr
-addOrSub = chainl1 mulOrDiv (pad (try (Add <$ char '+') <|> Sub <$ char '-'))
+addOrSub = chainl1 mulOrDiv (add <|> sub)
+  where
+    add = try (pad (Add <$ char '+'))
+    sub = try (pad (Sub <$ char '-'))
 
 mulOrDiv :: Stream s m Char => ParsecT s u m Expr
-mulOrDiv = chainl1 negative (pad (try (Mul <$ char '*') <|> Div <$ char '/'))
+mulOrDiv = chainl1 negative (mul <|> div)
+  where
+    mul = try (pad (Mul <$ char '*'))
+    div = try (pad (Div <$ char '/'))
 
 negative :: Stream s m Char => ParsecT s u m Expr
 negative = spaces *> (foldl (.) id <$> many (Neg <$ char '-') <*> parensOrAtom)
