@@ -59,21 +59,21 @@
 </span><span id="line-59"></span><span class="annot"><a href="Handler.html#getVarsR"><span class="hs-identifier hs-type">getVarsR</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">TypedContent</span></span><span>
 </span><span id="line-60"></span><span id="getVarsR"><span class="annot"><span class="annottext">getVarsR :: Handler TypedContent
 </span><a href="Handler.html#getVarsR"><span class="hs-identifier hs-var hs-var">getVarsR</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-61"></span><span>  </span><span id="local-6989586621679161327"><span class="annot"><span class="annottext">Maybe Text
-</span><a href="#local-6989586621679161327"><span class="hs-identifier hs-var">maybeName</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *). MonadHandler m =&gt; Text -&gt; m (Maybe Text)
+</span><span id="line-61"></span><span>  </span><span id="local-6989586621679161603"><span class="annot"><span class="annottext">Maybe Text
+</span><a href="#local-6989586621679161603"><span class="hs-identifier hs-var">maybeName</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *). MonadHandler m =&gt; Text -&gt; m (Maybe Text)
 </span><span class="hs-identifier hs-var">lookupGetParam</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;name&quot;</span></span><span>
-</span><span id="line-62"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161321"><span class="annot"><span class="annottext">filters :: [Filter Variable]
-</span><a href="#local-6989586621679161321"><span class="hs-identifier hs-var hs-var">filters</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Maybe a -&gt; [a]
+</span><span id="line-62"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161597"><span class="annot"><span class="annottext">filters :: [Filter Variable]
+</span><a href="#local-6989586621679161597"><span class="hs-identifier hs-var hs-var">filters</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Maybe a -&gt; [a]
 </span><span class="hs-identifier hs-var">maybeToList</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-identifier hs-var">fmap</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall typ. (typ ~ Text) =&gt; EntityField Variable typ
 </span><a href="Foundation.html#VariableName"><span class="hs-identifier hs-var">VariableName</span></a></span><span> </span><span class="annot"><span class="annottext">forall v typ.
 PersistField typ =&gt;
 EntityField v typ -&gt; typ -&gt; Filter v
 </span><span class="hs-operator hs-var">==.</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Maybe Text
-</span><a href="#local-6989586621679161327"><span class="hs-identifier hs-var">maybeName</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-63"></span><span>  </span><span id="local-6989586621679161319"><span class="annot"><span class="annottext">[Entity Variable]
-</span><a href="#local-6989586621679161319"><span class="hs-identifier hs-var">entities</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
+</span><a href="#local-6989586621679161603"><span class="hs-identifier hs-var">maybeName</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-63"></span><span>  </span><span id="local-6989586621679161595"><span class="annot"><span class="annottext">[Entity Variable]
+</span><a href="#local-6989586621679161595"><span class="hs-identifier hs-var">entities</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
 YesodDB site a -&gt; HandlerFor site a
 </span><span class="hs-identifier hs-var">runDB</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall record backend (m :: * -&gt; *).
@@ -82,12 +82,12 @@ YesodDB site a -&gt; HandlerFor site a
 [Filter record]
 -&gt; [SelectOpt record] -&gt; ReaderT backend m [Entity record]
 </span><span class="hs-identifier hs-var">selectList</span></span><span> </span><span class="annot"><span class="annottext">[Filter Variable]
-</span><a href="#local-6989586621679161321"><span class="hs-identifier hs-var">filters</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">)</span><span>
-</span><span id="line-64"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161318"><span class="annot"><span class="annottext">variables :: [Variable]
-</span><a href="#local-6989586621679161318"><span class="hs-identifier hs-var hs-var">variables</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+</span><a href="#local-6989586621679161597"><span class="hs-identifier hs-var">filters</span></a></span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span class="hs-special">)</span><span>
+</span><span id="line-64"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161594"><span class="annot"><span class="annottext">variables :: [Variable]
+</span><a href="#local-6989586621679161594"><span class="hs-identifier hs-var hs-var">variables</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
 </span><span class="hs-identifier hs-var">map</span></span><span> </span><span class="annot"><span class="annottext">forall record. Entity record -&gt; record
 </span><span class="hs-identifier hs-var">entityVal</span></span><span> </span><span class="annot"><span class="annottext">[Entity Variable]
-</span><a href="#local-6989586621679161319"><span class="hs-identifier hs-var">entities</span></a></span><span>
+</span><a href="#local-6989586621679161595"><span class="hs-identifier hs-var">entities</span></a></span><span>
 </span><span id="line-65"></span><span>  </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *).
 MonadHandler m =&gt;
 Writer (Endo [ProvidedRep m]) () -&gt; m TypedContent
@@ -99,7 +99,7 @@ m a -&gt; Writer (Endo [ProvidedRep m]) ()
 </span><span class="hs-identifier hs-var">provideRep</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
 </span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. ToJSON a =&gt; a -&gt; Value
 </span><span class="hs-identifier hs-var">toJSON</span></span><span> </span><span class="annot"><span class="annottext">[Variable]
-</span><a href="#local-6989586621679161318"><span class="hs-identifier hs-var">variables</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161594"><span class="hs-identifier hs-var">variables</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-67"></span><span>    </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a.
 (Monad m, HasContentType a) =&gt;
 m a -&gt; Writer (Endo [ProvidedRep m]) ()
@@ -113,10 +113,10 @@ WidgetFor site () -&gt; HandlerFor site Html
 </span><span id="line-71"></span><span class="hs-comment">-- 404 error response is returned.</span><span>
 </span><span id="line-72"></span><span class="annot"><a href="Handler.html#getVarR"><span class="hs-identifier hs-type">getVarR</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">TypedContent</span></span><span>
 </span><span id="line-73"></span><span id="getVarR"><span class="annot"><span class="annottext">getVarR :: Text -&gt; Handler TypedContent
-</span><a href="Handler.html#getVarR"><span class="hs-identifier hs-var hs-var">getVarR</span></a></span></span><span> </span><span id="local-6989586621679161304"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161304"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-74"></span><span>  </span><span id="local-6989586621679161303"><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161303"><span class="hs-identifier hs-var">entity</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
+</span><a href="Handler.html#getVarR"><span class="hs-identifier hs-var hs-var">getVarR</span></a></span></span><span> </span><span id="local-6989586621679161580"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679161580"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-74"></span><span>  </span><span id="local-6989586621679161579"><span class="annot"><span class="annottext">Entity Variable
+</span><a href="#local-6989586621679161579"><span class="hs-identifier hs-var">entity</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
 YesodDB site a -&gt; HandlerFor site a
 </span><span class="hs-identifier hs-var">runDB</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall backend val (m :: * -&gt; *).
@@ -125,7 +125,7 @@ YesodDB site a -&gt; HandlerFor site a
 Unique val -&gt; ReaderT backend m (Entity val)
 </span><span class="hs-identifier hs-var">getBy404</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; Unique Variable
 </span><a href="Foundation.html#UniqueName"><span class="hs-identifier hs-var">UniqueName</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161304"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161580"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-75"></span><span>  </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *).
 MonadHandler m =&gt;
 Writer (Endo [ProvidedRep m]) () -&gt; m TypedContent
@@ -138,16 +138,16 @@ m a -&gt; Writer (Endo [ProvidedRep m]) ()
 </span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. ToJSON a =&gt; a -&gt; Value
 </span><span class="hs-identifier hs-var">toJSON</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall record. Entity record -&gt; record
 </span><span class="hs-identifier hs-var">entityVal</span></span><span> </span><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161303"><span class="hs-identifier hs-var">entity</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161579"><span class="hs-identifier hs-var">entity</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-77"></span><span>    </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a.
 (Monad m, HasContentType a) =&gt;
 m a -&gt; Writer (Endo [ProvidedRep m]) ()
 </span><span class="hs-identifier hs-var">provideRep</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-78"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161301"><span class="annot"><span class="annottext">variables :: [Variable]
-</span><a href="#local-6989586621679161301"><span class="hs-identifier hs-var hs-var">variables</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">forall record. Entity record -&gt; record
+</span><span id="line-78"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161577"><span class="annot"><span class="annottext">variables :: [Variable]
+</span><a href="#local-6989586621679161577"><span class="hs-identifier hs-var hs-var">variables</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">forall record. Entity record -&gt; record
 </span><span class="hs-identifier hs-var">entityVal</span></span><span> </span><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161303"><span class="hs-identifier hs-var">entity</span></a></span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679161579"><span class="hs-identifier hs-var">entity</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-79"></span><span>      </span><span class="annot"><span class="annottext">forall site.
 Yesod site =&gt;
 WidgetFor site () -&gt; HandlerFor site Html
@@ -183,13 +183,13 @@ WidgetFor site () -&gt; HandlerFor site Html
 </span><span id="line-98"></span><span class="hs-comment">-- &gt; {&quot;value&quot;: 100}</span><span>
 </span><span id="line-99"></span><span class="annot"><a href="Handler.html#putVarR"><span class="hs-identifier hs-type">putVarR</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-100"></span><span id="putVarR"><span class="annot"><span class="annottext">putVarR :: Text -&gt; Handler ()
-</span><a href="Handler.html#putVarR"><span class="hs-identifier hs-var hs-var">putVarR</span></a></span></span><span> </span><span id="local-6989586621679161296"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161296"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
+</span><a href="Handler.html#putVarR"><span class="hs-identifier hs-var hs-var">putVarR</span></a></span></span><span> </span><span id="local-6989586621679161572"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679161572"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span>
 </span><span id="line-101"></span><span>  </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. (MonadHandler m, FromJSON a) =&gt; m a
 </span><span class="hs-identifier hs-var">requireCheckJsonBody</span></span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a b. Monad m =&gt; m a -&gt; (a -&gt; m b) -&gt; m b
 </span><span class="hs-operator hs-var">&gt;&gt;=</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Double -&gt; Handler ()
 </span><a href="Handler.html#setVariable"><span class="hs-identifier hs-var">setVariable</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161296"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><a href="#local-6989586621679161572"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">PutVariableRequest -&gt; Double
 </span><a href="Model.PutVariableRequest.html#value"><span class="hs-identifier hs-var">PutVariableRequest.value</span></a></span><span>
 </span><span id="line-102"></span><span>
@@ -198,8 +198,8 @@ WidgetFor site () -&gt; HandlerFor site Html
 </span><span id="line-105"></span><span class="hs-comment">-- happens.</span><span>
 </span><span id="line-106"></span><span class="annot"><a href="Handler.html#deleteVarR"><span class="hs-identifier hs-type">deleteVarR</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-107"></span><span id="deleteVarR"><span class="annot"><span class="annottext">deleteVarR :: Text -&gt; Handler ()
-</span><a href="Handler.html#deleteVarR"><span class="hs-identifier hs-var hs-var">deleteVarR</span></a></span></span><span> </span><span id="local-6989586621679161294"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161294"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall site a.
+</span><a href="Handler.html#deleteVarR"><span class="hs-identifier hs-var hs-var">deleteVarR</span></a></span></span><span> </span><span id="local-6989586621679161570"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679161570"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
 YesodDB site a -&gt; HandlerFor site a
 </span><span class="hs-identifier hs-var">runDB</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall backend record (m :: * -&gt; *).
@@ -208,22 +208,22 @@ YesodDB site a -&gt; HandlerFor site a
 Unique record -&gt; ReaderT backend m ()
 </span><span class="hs-identifier hs-var">deleteBy</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; Unique Variable
 </span><a href="Foundation.html#UniqueName"><span class="hs-identifier hs-var">UniqueName</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161294"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161570"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-108"></span><span>
 </span><span id="line-109"></span><span class="annot"><a href="Handler.html#setVariable"><span class="hs-identifier hs-type">setVariable</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
 </span><span id="line-110"></span><span id="setVariable"><span class="annot"><span class="annottext">setVariable :: Text -&gt; Double -&gt; Handler ()
-</span><a href="Handler.html#setVariable"><span class="hs-identifier hs-var hs-var">setVariable</span></a></span></span><span> </span><span id="local-6989586621679161293"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161293"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span id="local-6989586621679161292"><span class="annot"><span class="annottext">Double
-</span><a href="#local-6989586621679161292"><span class="hs-identifier hs-var">value</span></a></span></span><span>
+</span><a href="Handler.html#setVariable"><span class="hs-identifier hs-var hs-var">setVariable</span></a></span></span><span> </span><span id="local-6989586621679161569"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679161569"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span id="local-6989586621679161568"><span class="annot"><span class="annottext">Double
+</span><a href="#local-6989586621679161568"><span class="hs-identifier hs-var">value</span></a></span></span><span>
 </span><span id="line-111"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Bool
 </span><a href="Expr.html#isValidName"><span class="hs-identifier hs-var">isValidName</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161293"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-112"></span><span>    </span><span id="local-6989586621679161290"><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679161290"><span class="hs-identifier hs-var">time</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. MonadIO m =&gt; IO a -&gt; m a
+</span><a href="#local-6989586621679161569"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-112"></span><span>    </span><span id="local-6989586621679161566"><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679161566"><span class="hs-identifier hs-var">time</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. MonadIO m =&gt; IO a -&gt; m a
 </span><span class="hs-identifier hs-var">liftIO</span></span><span> </span><span class="annot"><span class="annottext">IO UTCTime
 </span><span class="hs-identifier hs-var">getCurrentTime</span></span><span>
-</span><span id="line-113"></span><span>    </span><span id="local-6989586621679161289"><span class="annot"><span class="annottext">Maybe (Entity Variable)
-</span><a href="#local-6989586621679161289"><span class="hs-identifier hs-var">maybeEntity</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
+</span><span id="line-113"></span><span>    </span><span id="local-6989586621679161565"><span class="annot"><span class="annottext">Maybe (Entity Variable)
+</span><a href="#local-6989586621679161565"><span class="hs-identifier hs-var">maybeEntity</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
 YesodDB site a -&gt; HandlerFor site a
 </span><span class="hs-identifier hs-var">runDB</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall backend record (m :: * -&gt; *).
@@ -232,18 +232,18 @@ YesodDB site a -&gt; HandlerFor site a
 Unique record -&gt; ReaderT backend m (Maybe (Entity record))
 </span><span class="hs-identifier hs-var">getBy</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; Unique Variable
 </span><a href="Foundation.html#UniqueName"><span class="hs-identifier hs-var">UniqueName</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161293"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161569"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-114"></span><span>    </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Maybe (Entity Variable)
-</span><a href="#local-6989586621679161289"><span class="hs-identifier hs-var">maybeEntity</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679161565"><span class="hs-identifier hs-var">maybeEntity</span></a></span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-115"></span><span>      </span><span class="annot"><span class="annottext">Maybe (Entity Variable)
 </span><span class="hs-identifier hs-var">Nothing</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-116"></span><span>        </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161288"><span class="annot"><span class="annottext">variable :: Variable
-</span><a href="#local-6989586621679161288"><span class="hs-identifier hs-var hs-var">variable</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Double -&gt; UTCTime -&gt; UTCTime -&gt; Variable
+</span><span id="line-116"></span><span>        </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161564"><span class="annot"><span class="annottext">variable :: Variable
+</span><a href="#local-6989586621679161564"><span class="hs-identifier hs-var hs-var">variable</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Text -&gt; Double -&gt; UTCTime -&gt; UTCTime -&gt; Variable
 </span><a href="Foundation.html#Variable"><span class="hs-identifier hs-var">Variable</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161293"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="annot"><span class="annottext">Double
-</span><a href="#local-6989586621679161292"><span class="hs-identifier hs-var">value</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679161290"><span class="hs-identifier hs-var">time</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679161290"><span class="hs-identifier hs-var">time</span></a></span><span>
+</span><a href="#local-6989586621679161569"><span class="hs-identifier hs-var">name</span></a></span><span> </span><span class="annot"><span class="annottext">Double
+</span><a href="#local-6989586621679161568"><span class="hs-identifier hs-var">value</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679161566"><span class="hs-identifier hs-var">time</span></a></span><span> </span><span class="annot"><span class="annottext">UTCTime
+</span><a href="#local-6989586621679161566"><span class="hs-identifier hs-var">time</span></a></span><span>
 </span><span id="line-117"></span><span>        </span><span class="annot"><span class="annottext">Key Variable
 </span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
@@ -253,23 +253,23 @@ YesodDB site a -&gt; HandlerFor site a
  PersistRecordBackend record backend) =&gt;
 record -&gt; ReaderT backend m (Key record)
 </span><span class="hs-identifier hs-var">insert</span></span><span> </span><span class="annot"><span class="annottext">Variable
-</span><a href="#local-6989586621679161288"><span class="hs-identifier hs-var">variable</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161564"><span class="hs-identifier hs-var">variable</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-118"></span><span>        </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
 </span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="hs-special">)</span><span>
-</span><span id="line-119"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679161286"><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161286"><span class="hs-identifier hs-var">entity</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-120"></span><span>        </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161279"><span class="annot"><span class="annottext">updates :: [Update Variable]
-</span><a href="#local-6989586621679161279"><span class="hs-identifier hs-var hs-var">updates</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">forall typ. (typ ~ Double) =&gt; EntityField Variable typ
+</span><span id="line-119"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679161562"><span class="annot"><span class="annottext">Entity Variable
+</span><a href="#local-6989586621679161562"><span class="hs-identifier hs-var">entity</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-120"></span><span>        </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161555"><span class="annot"><span class="annottext">updates :: [Update Variable]
+</span><a href="#local-6989586621679161555"><span class="hs-identifier hs-var hs-var">updates</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">forall typ. (typ ~ Double) =&gt; EntityField Variable typ
 </span><a href="Foundation.html#VariableValue"><span class="hs-identifier hs-var">VariableValue</span></a></span><span> </span><span class="annot"><span class="annottext">forall v typ.
 PersistField typ =&gt;
 EntityField v typ -&gt; typ -&gt; Update v
 </span><span class="hs-operator hs-var">=.</span></span><span> </span><span class="annot"><span class="annottext">Double
-</span><a href="#local-6989586621679161292"><span class="hs-identifier hs-var">value</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">forall typ. (typ ~ UTCTime) =&gt; EntityField Variable typ
+</span><a href="#local-6989586621679161568"><span class="hs-identifier hs-var">value</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">forall typ. (typ ~ UTCTime) =&gt; EntityField Variable typ
 </span><a href="Foundation.html#VariableUpdated"><span class="hs-identifier hs-var">VariableUpdated</span></a></span><span> </span><span class="annot"><span class="annottext">forall v typ.
 PersistField typ =&gt;
 EntityField v typ -&gt; typ -&gt; Update v
 </span><span class="hs-operator hs-var">=.</span></span><span> </span><span class="annot"><span class="annottext">UTCTime
-</span><a href="#local-6989586621679161290"><span class="hs-identifier hs-var">time</span></a></span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679161566"><span class="hs-identifier hs-var">time</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-121"></span><span>        </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
 YesodDB site a -&gt; HandlerFor site a
@@ -280,10 +280,10 @@ YesodDB site a -&gt; HandlerFor site a
 Key record -&gt; [Update record] -&gt; ReaderT backend m ()
 </span><span class="hs-identifier hs-var">update</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall record. Entity record -&gt; Key record
 </span><span class="hs-identifier hs-var">entityKey</span></span><span> </span><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161286"><span class="hs-identifier hs-var">entity</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Update Variable]
-</span><a href="#local-6989586621679161279"><span class="hs-identifier hs-var">updates</span></a></span><span>
-</span><span id="line-122"></span><span class="annot"><a href="Handler.html#setVariable"><span class="hs-identifier hs-var">setVariable</span></a></span><span> </span><span id="local-6989586621679161276"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161276"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="annot"><span class="annottext">Double
+</span><a href="#local-6989586621679161562"><span class="hs-identifier hs-var">entity</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">[Update Variable]
+</span><a href="#local-6989586621679161555"><span class="hs-identifier hs-var">updates</span></a></span><span>
+</span><span id="line-122"></span><span class="annot"><a href="Handler.html#setVariable"><span class="hs-identifier hs-var">setVariable</span></a></span><span> </span><span id="local-6989586621679161552"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679161552"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="annot"><span class="annottext">Double
 </span><span class="hs-identifier">_</span></span><span>
 </span><span id="line-123"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
 </span><span class="hs-identifier hs-var">otherwise</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) c a.
@@ -293,7 +293,7 @@ Status -&gt; c -&gt; m a
 </span><span class="hs-identifier hs-var">status400</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; Text -&gt; Text
 </span><span class="hs-identifier hs-var">Text.append</span></span><span> </span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;Invalid name: &quot;</span></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161276"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161552"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-124"></span><span>
 </span><span id="line-125"></span><span class="hs-comment">-------------------------------------------------------------------------------</span><span>
 </span><span id="line-126"></span><span class="hs-comment">-- Evaluate an expression</span><span>
@@ -308,43 +308,43 @@ Status -&gt; c -&gt; m a
 </span><span id="line-135"></span><span class="annot"><a href="Handler.html#postEvalR"><span class="hs-identifier hs-type">postEvalR</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="annot"><span class="hs-identifier hs-type">TypedContent</span></span><span>
 </span><span id="line-136"></span><span id="postEvalR"><span class="annot"><span class="annottext">postEvalR :: Handler TypedContent
 </span><a href="Handler.html#postEvalR"><span class="hs-identifier hs-var hs-var">postEvalR</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-137"></span><span>  </span><span id="local-6989586621679161274"><span class="annot"><span class="annottext">PostEvalRequest
-</span><a href="#local-6989586621679161274"><span class="hs-identifier hs-var">request</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. (MonadHandler m, FromJSON a) =&gt; m a
+</span><span id="line-137"></span><span>  </span><span id="local-6989586621679161550"><span class="annot"><span class="annottext">PostEvalRequest
+</span><a href="#local-6989586621679161550"><span class="hs-identifier hs-var">request</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. (MonadHandler m, FromJSON a) =&gt; m a
 </span><span class="hs-identifier hs-var">requireCheckJsonBody</span></span><span>
-</span><span id="line-138"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161271"><span class="annot"><span class="annottext">errorOrExpr :: Either ParseError Expr
-</span><a href="#local-6989586621679161271"><span class="hs-identifier hs-var hs-var">errorOrExpr</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall s. Stream s Identity Char =&gt; s -&gt; Either ParseError Expr
+</span><span id="line-138"></span><span>  </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161547"><span class="annot"><span class="annottext">errorOrExpr :: Either ParseError Expr
+</span><a href="#local-6989586621679161547"><span class="hs-identifier hs-var hs-var">errorOrExpr</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall s. Stream s Identity Char =&gt; s -&gt; Either ParseError Expr
 </span><a href="Expr.html#parseExpr"><span class="hs-identifier hs-var">parseExpr</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">PostEvalRequest -&gt; Text
 </span><a href="Model.PostEvalRequest.html#expr"><span class="hs-identifier hs-var">PostEvalRequest.expr</span></a></span><span> </span><span class="annot"><span class="annottext">PostEvalRequest
-</span><a href="#local-6989586621679161274"><span class="hs-identifier hs-var">request</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161550"><span class="hs-identifier hs-var">request</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-139"></span><span>  </span><span class="hs-keyword">case</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall s. Stream s Identity Char =&gt; s -&gt; Either ParseError Expr
 </span><a href="Expr.html#parseExpr"><span class="hs-identifier hs-var">parseExpr</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">PostEvalRequest -&gt; Text
 </span><a href="Model.PostEvalRequest.html#expr"><span class="hs-identifier hs-var">PostEvalRequest.expr</span></a></span><span> </span><span class="annot"><span class="annottext">PostEvalRequest
-</span><a href="#local-6989586621679161274"><span class="hs-identifier hs-var">request</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
-</span><span id="line-140"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span id="local-6989586621679161268"><span class="annot"><span class="annottext">ParseError
-</span><a href="#local-6989586621679161268"><span class="hs-identifier hs-var">error</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) c a.
+</span><a href="#local-6989586621679161550"><span class="hs-identifier hs-var">request</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-140"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span id="local-6989586621679161544"><span class="annot"><span class="annottext">ParseError
+</span><a href="#local-6989586621679161544"><span class="hs-identifier hs-var">error</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) c a.
 (MonadHandler m, ToTypedContent c) =&gt;
 Status -&gt; c -&gt; m a
 </span><span class="hs-identifier hs-var">sendResponseStatus</span></span><span> </span><span class="annot"><span class="annottext">Status
 </span><span class="hs-identifier hs-var">status400</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Show a =&gt; a -&gt; String
 </span><span class="hs-identifier hs-var">show</span></span><span> </span><span class="annot"><span class="annottext">ParseError
-</span><a href="#local-6989586621679161268"><span class="hs-identifier hs-var">error</span></a></span><span class="hs-special">)</span><span>
-</span><span id="line-141"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679161267"><span class="annot"><span class="annottext">Expr
-</span><a href="#local-6989586621679161267"><span class="hs-identifier hs-var">expr</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-142"></span><span>      </span><span id="local-6989586621679161266"><span class="annot"><span class="annottext">Map Text Double
-</span><a href="#local-6989586621679161266"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+</span><a href="#local-6989586621679161544"><span class="hs-identifier hs-var">error</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-141"></span><span>    </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679161543"><span class="annot"><span class="annottext">Expr
+</span><a href="#local-6989586621679161543"><span class="hs-identifier hs-var">expr</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-142"></span><span>      </span><span id="local-6989586621679161542"><span class="annot"><span class="annottext">Map Text Double
+</span><a href="#local-6989586621679161542"><span class="hs-identifier hs-var">env</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall (f :: * -&gt; *) a b. Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
 </span><span class="hs-identifier hs-var">fmap</span></span><span> </span><span class="annot"><span class="annottext">forall k a. Ord k =&gt; [(k, a)] -&gt; Map k a
 </span><span class="hs-identifier hs-var">Map.fromList</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall (t :: * -&gt; *) (m :: * -&gt; *) a b.
 (Traversable t, Monad m) =&gt;
 (a -&gt; m b) -&gt; t a -&gt; m (t b)
 </span><span class="hs-identifier hs-var">mapM</span></span><span> </span><span class="annot"><span class="annottext">Text -&gt; Handler (Text, Double)
-</span><a href="#local-6989586621679161263"><span class="hs-identifier hs-var">loadVar</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Set a -&gt; [a]
+</span><a href="#local-6989586621679161539"><span class="hs-identifier hs-var">loadVar</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Set a -&gt; [a]
 </span><span class="hs-identifier hs-var">Set.toList</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Expr -&gt; Set Text
 </span><a href="Expr.html#variablesOf"><span class="hs-identifier hs-var">variablesOf</span></a></span><span> </span><span class="annot"><span class="annottext">Expr
-</span><a href="#local-6989586621679161267"><span class="hs-identifier hs-var">expr</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161543"><span class="hs-identifier hs-var">expr</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span class="hs-special">)</span><span>
 </span><span id="line-143"></span><span>      </span><span class="hs-keyword">case</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Map Text Double -&gt; Expr -&gt; Maybe Double
 </span><a href="Expr.html#evaluateExpr"><span class="hs-identifier hs-var">evaluateExpr</span></a></span><span> </span><span class="annot"><span class="annottext">Map Text Double
-</span><a href="#local-6989586621679161266"><span class="hs-identifier hs-var">env</span></a></span><span> </span><span class="annot"><span class="annottext">Expr
-</span><a href="#local-6989586621679161267"><span class="hs-identifier hs-var">expr</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
+</span><a href="#local-6989586621679161542"><span class="hs-identifier hs-var">env</span></a></span><span> </span><span class="annot"><span class="annottext">Expr
+</span><a href="#local-6989586621679161543"><span class="hs-identifier hs-var">expr</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-keyword">of</span><span>
 </span><span id="line-144"></span><span>        </span><span class="annot"><span class="annottext">Maybe Double
 </span><span class="hs-identifier hs-var">Nothing</span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-145"></span><span>          </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) c a.
@@ -353,8 +353,8 @@ Status -&gt; c -&gt; m a
 </span><span class="hs-identifier hs-var">sendResponseStatus</span></span><span> </span><span class="annot"><span class="annottext">Status
 </span><span class="hs-identifier hs-var">status500</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text
 </span><span class="hs-string">&quot;Unknown error occurred&quot;</span></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">)</span><span>
-</span><span id="line-146"></span><span>        </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679161259"><span class="annot"><span class="annottext">Double
-</span><a href="#local-6989586621679161259"><span class="hs-identifier hs-var">value</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
+</span><span id="line-146"></span><span>        </span><span class="annot"><span class="hs-identifier hs-type">Just</span></span><span> </span><span id="local-6989586621679161535"><span class="annot"><span class="annottext">Double
+</span><a href="#local-6989586621679161535"><span class="hs-identifier hs-var">value</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span>
 </span><span id="line-147"></span><span>          </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *).
 MonadHandler m =&gt;
 Writer (Endo [ProvidedRep m]) () -&gt; m TypedContent
@@ -371,7 +371,7 @@ m a -&gt; Writer (Endo [ProvidedRep m]) ()
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Key
 </span><span class="hs-string">&quot;value&quot;</span></span><span> </span><span class="annot"><span class="annottext">forall kv v. (KeyValue kv, ToJSON v) =&gt; Key -&gt; v -&gt; kv
 </span><span class="hs-operator hs-var">.=</span></span><span> </span><span class="annot"><span class="annottext">Double
-</span><a href="#local-6989586621679161259"><span class="hs-identifier hs-var">value</span></a></span><span class="hs-special">]</span><span>
+</span><a href="#local-6989586621679161535"><span class="hs-identifier hs-var">value</span></a></span><span class="hs-special">]</span><span>
 </span><span id="line-149"></span><span>            </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a.
 (Monad m, HasContentType a) =&gt;
 m a -&gt; Writer (Endo [ProvidedRep m]) ()
@@ -381,12 +381,12 @@ Yesod site =&gt;
 WidgetFor site () -&gt; HandlerFor site Html
 </span><span class="hs-identifier hs-var">defaultLayout</span></span><span> </span><span class="annot"><span class="">[whamlet|#{show value}|]</span></span><span>
 </span><span id="line-150"></span><span>  </span><span class="hs-keyword">where</span><span>
-</span><span id="line-151"></span><span>    </span><span class="annot"><a href="#local-6989586621679161263"><span class="hs-identifier hs-type">loadVar</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
-</span><span id="line-152"></span><span>    </span><span id="local-6989586621679161263"><span class="annot"><span class="annottext">loadVar :: Text -&gt; Handler (Text, Double)
-</span><a href="#local-6989586621679161263"><span class="hs-identifier hs-var hs-var">loadVar</span></a></span></span><span> </span><span id="local-6989586621679161258"><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161258"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
-</span><span id="line-153"></span><span>      </span><span id="local-6989586621679161257"><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161257"><span class="hs-identifier hs-var">entity</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
+</span><span id="line-151"></span><span>    </span><span class="annot"><a href="#local-6989586621679161539"><span class="hs-identifier hs-type">loadVar</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Foundation.html#Handler"><span class="hs-identifier hs-type">Handler</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Text</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Double</span></span><span class="hs-special">)</span><span>
+</span><span id="line-152"></span><span>    </span><span id="local-6989586621679161539"><span class="annot"><span class="annottext">loadVar :: Text -&gt; Handler (Text, Double)
+</span><a href="#local-6989586621679161539"><span class="hs-identifier hs-var hs-var">loadVar</span></a></span></span><span> </span><span id="local-6989586621679161534"><span class="annot"><span class="annottext">Text
+</span><a href="#local-6989586621679161534"><span class="hs-identifier hs-var">name</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">do</span><span>
+</span><span id="line-153"></span><span>      </span><span id="local-6989586621679161533"><span class="annot"><span class="annottext">Entity Variable
+</span><a href="#local-6989586621679161533"><span class="hs-identifier hs-var">entity</span></a></span></span><span> </span><span class="hs-glyph">&lt;-</span><span> </span><span class="annot"><span class="annottext">forall site a.
 YesodPersist site =&gt;
 YesodDB site a -&gt; HandlerFor site a
 </span><span class="hs-identifier hs-var">runDB</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall backend val (m :: * -&gt; *).
@@ -395,15 +395,15 @@ YesodDB site a -&gt; HandlerFor site a
 Unique val -&gt; ReaderT backend m (Entity val)
 </span><span class="hs-identifier hs-var">getBy404</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Text -&gt; Unique Variable
 </span><a href="Foundation.html#UniqueName"><span class="hs-identifier hs-var">UniqueName</span></a></span><span> </span><span class="annot"><span class="annottext">Text
-</span><a href="#local-6989586621679161258"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
-</span><span id="line-154"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161256"><span class="annot"><span class="annottext">variable :: Variable
-</span><a href="#local-6989586621679161256"><span class="hs-identifier hs-var hs-var">variable</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall record. Entity record -&gt; record
+</span><a href="#local-6989586621679161534"><span class="hs-identifier hs-var">name</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span>
+</span><span id="line-154"></span><span>      </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679161532"><span class="annot"><span class="annottext">variable :: Variable
+</span><a href="#local-6989586621679161532"><span class="hs-identifier hs-var hs-var">variable</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall record. Entity record -&gt; record
 </span><span class="hs-identifier hs-var">entityVal</span></span><span> </span><span class="annot"><span class="annottext">Entity Variable
-</span><a href="#local-6989586621679161257"><span class="hs-identifier hs-var">entity</span></a></span><span>
+</span><a href="#local-6989586621679161533"><span class="hs-identifier hs-var">entity</span></a></span><span>
 </span><span id="line-155"></span><span>      </span><span class="annot"><span class="annottext">forall (m :: * -&gt; *) a. Monad m =&gt; a -&gt; m a
 </span><span class="hs-identifier hs-var">return</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Variable -&gt; Text
 </span><a href="Foundation.html#variableName"><span class="hs-identifier hs-var">variableName</span></a></span><span> </span><span class="annot"><span class="annottext">Variable
-</span><a href="#local-6989586621679161256"><span class="hs-identifier hs-var">variable</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Variable -&gt; Double
+</span><a href="#local-6989586621679161532"><span class="hs-identifier hs-var">variable</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">Variable -&gt; Double
 </span><a href="Foundation.html#variableValue"><span class="hs-identifier hs-var">variableValue</span></a></span><span> </span><span class="annot"><span class="annottext">Variable
-</span><a href="#local-6989586621679161256"><span class="hs-identifier hs-var">variable</span></a></span><span class="hs-special">)</span><span>
+</span><a href="#local-6989586621679161532"><span class="hs-identifier hs-var">variable</span></a></span><span class="hs-special">)</span><span>
 </span><span id="line-156"></span></pre></body></html>
