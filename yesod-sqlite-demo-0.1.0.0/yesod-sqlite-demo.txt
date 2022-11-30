@@ -85,9 +85,9 @@ instance Data.Aeson.Types.FromJSON.FromJSON Model.PutVariableRequest.PutVariable
 
 module Handler
 
--- | Handle <tt>/variables GET</tt> requests by returning either <i>all</i>
---   variables, or, if the <tt>name</tt> query parameter exists, the
---   variable picked out by that parameter (if it exists).
+-- | Handle <tt>/variables GET</tt> requests by returning the variables
+--   specified by the filter and limit conditions specified in the query
+--   parameters, and sorted by the field specified in the query parameters.
 getVarsR :: Handler TypedContent
 
 -- | Handle <tt>/variables/{name} GET</tt> requests for a single variable
