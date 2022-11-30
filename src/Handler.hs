@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Handler
@@ -13,16 +14,17 @@ module Handler
 
 import Control.Monad.IO.Class (liftIO)
 import Data.Aeson ((.=), object, toJSON)
-import Data.Either (either)
-import Data.Map (Map)
+import Data.Bool (bool)
 import qualified Data.Map as Map
-import Data.Maybe (fromJust, maybeToList)
+import Data.Maybe (catMaybes, isNothing, maybeToList)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time (getCurrentTime)
 import Database.Persist
   ( Entity(entityKey, entityVal)
+  , Filter
+  , SelectOpt(Asc, Desc, LimitTo)
   , (=.)
   , (==.)
   , deleteBy
@@ -53,14 +55,13 @@ import qualified Model.PutVariableRequest as PutVariableRequest
 -------------------------------------------------------------------------------
 -- Get variable(s)
 -------------------------------------------------------------------------------
--- | Handle @\/variables GET@ requests by returning either /all/ variables, or,
--- if the @name@ query parameter exists, the variable picked out by that
--- parameter (if it exists).
+
+-- | Handle @\/variables GET@ requests by returning the variables specified by
+-- the filter and limit conditions specified in the query parameters, and
+-- sorted by the field specified in the query parameters.
 getVarsR :: Handler TypedContent
 getVarsR = do
-  maybeName <- lookupGetParam "name"
-  let filters = maybeToList (fmap (VariableName ==.) maybeName)
-  entities <- runDB (selectList filters [])
+  entities <- selectList <$> getFilters <*> getSelectOpts >>= runDB
   let variables = map entityVal entities
   selectRep $ do
     provideRep (return (toJSON variables))
@@ -78,9 +79,32 @@ getVarR name = do
       let variables = [entityVal entity]
       defaultLayout $(whamletFile "templates/variables-table.hamlet")
 
+getFilters :: Handler [Filter Variable]
+getFilters = maybeToList . fmap (VariableName ==.) <$> lookupGetParam "name"
+
+getSelectOpts :: Handler [SelectOpt Variable]
+getSelectOpts = do
+  maybeSortBy <- lookupGetParam "sort"
+  maybeDesc <- lookupGetParam "desc"
+  let maybeSort =
+        maybeSortBy >>= resolveField (bool Desc Asc (isNothing maybeDesc))
+  maybeLimit <- fmap (LimitTo . read . Text.unpack) <$> lookupGetParam "limit"
+  return (catMaybes [maybeSort, maybeLimit])
+  where
+    resolveField ::
+         (forall t. EntityField Variable t -> SelectOpt Variable)
+      -> Text
+      -> Maybe (SelectOpt Variable)
+    resolveField sortOrder "name" = Just (sortOrder VariableName)
+    resolveField sortOrder "value" = Just (sortOrder VariableValue)
+    resolveField sortOrder "created" = Just (sortOrder VariableCreated)
+    resolveField sortOrder "updated" = Just (sortOrder VariableUpdated)
+    resolveField _ _ = Nothing
+
 -------------------------------------------------------------------------------
 -- Create/update/delete variable(s)
 -------------------------------------------------------------------------------
+
 -- | Handle @\/variables POST@ requests by creating or updating multiple
 -- variables at once. The variables to be updated are specified in the request
 -- body, which is a JSON object whose keys are variable names and values are
@@ -125,6 +149,7 @@ setVariable name _
 -------------------------------------------------------------------------------
 -- Evaluate an expression
 -------------------------------------------------------------------------------
+
 -- | Handle @\/ POST@ requests by evaluating the expression in the request
 -- body, which should be a JSON object like
 --
@@ -135,9 +160,8 @@ setVariable name _
 postEvalR :: Handler TypedContent
 postEvalR = do
   request <- requireCheckJsonBody
-  let errorOrExpr = parseExpr (PostEvalRequest.expr request)
   case (parseExpr (PostEvalRequest.expr request)) of
-    Left error -> sendResponseStatus status400 (show error)
+    Left err -> sendResponseStatus status400 (show err)
     Right expr -> do
       env <- fmap Map.fromList (mapM loadVar (Set.toList (variablesOf expr)))
       case (evaluateExpr env expr) of
